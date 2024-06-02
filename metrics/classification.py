@@ -29,6 +29,8 @@ class ClassificationReport:
         col_sum = cf_matrix.sum(axis=0)
         row_sum = cf_matrix.sum(axis=1)
 
+        self._diagonal_sum = 0
+
         for idx, class_label in enumerate(class_labels):
             precision = cf_matrix[idx][idx] / col_sum[idx] if col_sum[idx] != 0 else 0
             recall = cf_matrix[idx][idx] / row_sum[idx] if row_sum[idx] != 0 else 0
@@ -47,11 +49,17 @@ class ClassificationReport:
                 support
             ))
 
+            self._diagonal_sum += cf_matrix[idx][idx]
+
+        self._accuracy = self._diagonal_sum / sum(col_sum)
+
     def _report_to_str(self) -> str:
         header = "{: >10} {: >10} {: >10} {: >10} {: >10}".format("Class", "Precision", "Recall", "F1-Score", "Support")
         report = [header]
         for row in self._report_rows:
             report.append("{: >10} {: >10.2f} {: >10.2f} {: >10.2f} {: >10}".format(*row))
+
+        report.append("{: >10} {: >10.2f} {: >10}".format("Accuracy", self._accuracy, self._diagonal_sum))
 
         return "\n".join(report)
 
