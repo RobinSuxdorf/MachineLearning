@@ -1,7 +1,26 @@
 from typing import Any, Optional
 import numpy as np
 
+def _check_length(list1: list[Any], list2: list[Any]) -> None:
+    if len(list1) != len(list2):
+        raise ValueError("The lists do not have the same length.")
+
+def _check_type(list1: list[Any], list2: list[Any]) -> None:
+    if not list1:
+        raise ValueError("The first list is empty.")
+
+    list_type = type(list1[0])
+
+    if not all(isinstance(entry, list_type) for entry in list1):
+        raise ValueError("Not all elements in the first list are of the same type.")
+
+    if not all(isinstance(entry, list_type) for entry in list2):
+        raise ValueError("Not all elements in the second list are of the same type as the first element of the first list.")
+
 def confusion_matrix(y_true: list[Any], y_pred: list[Any], class_labels: Optional[list[Any]] = None) -> np.array:
+    _check_length(y_true, y_pred)
+    _check_type(y_true, y_pred)
+
     if class_labels is None:
         class_labels = np.union1d(y_true, y_pred)
 
@@ -21,6 +40,9 @@ def confusion_matrix(y_true: list[Any], y_pred: list[Any], class_labels: Optiona
 
 class ClassificationReport:
     def __init__(self, y_true: list[Any], y_pred: list[Any]) -> None:
+        _check_length(y_true, y_pred)
+        _check_type(y_true, y_pred)
+
         self._report_rows: list[tuple] = []
 
         class_labels = np.union1d(y_true, y_pred)
