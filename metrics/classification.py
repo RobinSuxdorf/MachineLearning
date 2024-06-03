@@ -17,6 +17,14 @@ def _check_type(list1: list[Any], list2: list[Any]) -> None:
     if not all(isinstance(entry, list_type) for entry in list2):
         raise ValueError("Not all elements in the second list are of the same type as the first element of the first list.")
 
+def accuracy_score(y_true: list[Any], y_pred: list[Any]) -> float:
+    _check_length(y_true, y_pred)
+    _check_type(y_true, y_pred)
+
+    correct_predictions = sum(1 for (true_label, pred_label) in zip(y_true, y_pred) if true_label == pred_label)
+
+    return correct_predictions / len(y_true)
+
 def confusion_matrix(y_true: list[Any], y_pred: list[Any], class_labels: Optional[list[Any]] = None) -> np.array:
     _check_length(y_true, y_pred)
     _check_type(y_true, y_pred)
