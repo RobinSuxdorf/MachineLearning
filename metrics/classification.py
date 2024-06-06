@@ -103,7 +103,7 @@ class ClassificationReport:
         _check_length(y_true, y_pred)
         _check_type(y_true, y_pred)
 
-        self._report_rows: list[tuple] = []
+        self._report: dict[str, dict[str, Any]] = {}
 
         class_labels = np.union1d(y_true, y_pred)
         cf_matrix = confusion_matrix(y_true, y_pred, class_labels)
@@ -123,13 +123,12 @@ class ClassificationReport:
 
             support = row_sum[idx]
 
-            self._report_rows.append((
-                class_label,
-                precision,
-                recall,
-                f1_score,
-                support
-            ))
+            self._report[class_label] = {
+                "precision": precision,
+                "recall": recall,
+                "f1_score": f1_score,
+                "support": support
+            }
 
             diagonal_sum += cf_matrix[idx][idx]
 
@@ -145,8 +144,8 @@ class ClassificationReport:
         """
         header = "{: >10} {: >10} {: >10} {: >10} {: >10}".format("Class", "Precision", "Recall", "F1-Score", "Support")
         report = [header]
-        for row in self._report_rows:
-            report.append("{: >10} {: >10.2f} {: >10.2f} {: >10.2f} {: >10}".format(*row))
+        for class_label, values in self._report.items():
+            report.append("{: >10} {precision: >10.2f} {recall: >10.2f} {f1_score: >10.2f} {support: >10}".format(class_label, **values))
 
         report.append("{: >10} {: >10} {: >10} {: >10.2f} {: >10}".format("Accuracy", "", "", self._accuracy, self._total_support))
 
