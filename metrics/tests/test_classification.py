@@ -6,7 +6,7 @@ from metrics import (
     ClassificationReport
 )
 
-def test_accuracy_sccore():
+def test_accuracy_sccore() -> None:
     y_true = [1, 0, 1, 1, 0]
     y_pred = [1, 1, 0, 1, 0]
 
@@ -16,7 +16,7 @@ def test_accuracy_sccore():
 
     assert accuracy == expected_accuracy
 
-def test_confusion_matrix_binary_classification():
+def test_confusion_matrix_binary_classification() -> None:
     y_true = [1, 0, 1, 1, 0, 0]
     y_pred = [1, 1, 0, 1, 0, 1]
 
@@ -29,7 +29,7 @@ def test_confusion_matrix_binary_classification():
 
     assert np.array_equal(cm, expected_cm)
 
-def test_confusion_matrix_multiclass_classification():
+def test_confusion_matrix_multiclass_classification() -> None:
     y_true = [0, 1, 2, 1, 2, 0, 1, 2]
     y_pred = [0, 2, 1, 0, 2, 1, 0, 1]
 
@@ -43,7 +43,7 @@ def test_confusion_matrix_multiclass_classification():
 
     assert np.array_equal(cm, expected_cm)
 
-def test_classification_report():
+def test_classification_report() -> None:
     y_true = [0, 2, 1, 2, 1, 1, 0, 1]
     y_pred = [2, 1, 0, 2, 2, 2, 0, 1]
 

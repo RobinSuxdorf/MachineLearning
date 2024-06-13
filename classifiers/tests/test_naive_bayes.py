@@ -4,7 +4,7 @@ import pandas as pd
 from preprocessing import split_features_and_target
 from classifiers import NaiveBayes
 
-def test_naive_bayes():
+def test_naive_bayes() -> None:
     data = [
         ("Rainy", "Hot", "High", "f", "no"),
         ("Rainy", "Hot", "High", "t", "no"),

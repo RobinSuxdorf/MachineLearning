@@ -3,7 +3,7 @@ import pandas as pd
 
 from preprocessing import split_features_and_target
 
-def _generate_mock_data():
+def _generate_mock_data() -> pd.DataFrame:
     df = pd.DataFrame({
         "A": [1, 2, 3],
         "B": [4, 5, 6],
@@ -12,7 +12,7 @@ def _generate_mock_data():
 
     return df
 
-def _generate_expected_mock_results():
+def _generate_expected_mock_results() -> tuple[pd.DataFrame, pd.Series]:
     expected_df = pd.DataFrame({
         "A": [1, 2, 3],
         "B": [4, 5, 6]
@@ -22,7 +22,7 @@ def _generate_expected_mock_results():
 
     return expected_df, expected_target
 
-def test_data_splitter_with_explicit_column():
+def test_data_splitter_with_explicit_column() -> None:
     df = _generate_mock_data()
 
     expected_df, expected_target = _generate_expected_mock_results()
@@ -32,7 +32,7 @@ def test_data_splitter_with_explicit_column():
     assert X.equals(expected_df)
     assert y.equals(expected_target)
 
-def test_data_splitter_without_explicit_column():
+def test_data_splitter_without_explicit_column() -> None:
     df = _generate_mock_data()
 
     expected_df, expected_target = _generate_expected_mock_results()
@@ -42,7 +42,7 @@ def test_data_splitter_without_explicit_column():
     assert X.equals(expected_df)
     assert y.equals(expected_target)
 
-def test_data_splitter_without_existing_column():
+def test_data_splitter_without_existing_column() -> None:
     df = _generate_mock_data()
 
     with pytest.raises(ValueError, match=r"Target column does not exist in DataFrame."):
