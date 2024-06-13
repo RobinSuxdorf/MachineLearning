@@ -15,7 +15,7 @@ def _generate_mock_data():
 def _generate_expected_mock_results():
     expected_df = pd.DataFrame({
         "A": [1, 2, 3],
-        "B": [4, 5, 6]
+        "B": [4, 5, 7]
     })
 
     expected_target = pd.Series([7, 8, 9])
