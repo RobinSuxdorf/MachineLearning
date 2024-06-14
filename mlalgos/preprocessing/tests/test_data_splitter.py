@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-from preprocessing import split_features_and_target
+from mlalgos.preprocessing import split_features_and_target
 
 def _generate_mock_data() -> pd.DataFrame:
     df = pd.DataFrame({

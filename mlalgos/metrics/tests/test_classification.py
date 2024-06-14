@@ -1,6 +1,6 @@
 import numpy as np
 
-from metrics import (
+from mlalgos.metrics import (
     accuracy_score,
     confusion_matrix,
     ClassificationReport

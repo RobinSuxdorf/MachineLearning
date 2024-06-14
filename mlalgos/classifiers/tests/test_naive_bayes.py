@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from preprocessing import split_features_and_target
-from classifiers import NaiveBayes
+from mlalgos.preprocessing import split_features_and_target
+from mlalgos.classifiers import NaiveBayes
 
 def test_naive_bayes() -> None:
     data = [
