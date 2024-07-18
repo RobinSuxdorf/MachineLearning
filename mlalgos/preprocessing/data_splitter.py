@@ -1,7 +1,10 @@
 from typing import Optional
 import pandas as pd
 
-def split_features_and_target(df: pd.DataFrame, target_column: Optional[str] = None) -> tuple[pd.DataFrame, pd.Series]:
+
+def split_features_and_target(
+    df: pd.DataFrame, target_column: Optional[str] = None
+) -> tuple[pd.DataFrame, pd.Series]:
     """
     Splits the DataFrame into features and target based on the specified target column.
 
