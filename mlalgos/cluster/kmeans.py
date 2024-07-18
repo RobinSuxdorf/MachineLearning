@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class KMeans:
     def __init__(self, n_clusters: int = 2, random_state: int = 0) -> None:
         """
@@ -40,7 +41,9 @@ class KMeans:
             tol (float): Tolernace to declare convergence.
             max_iter (int): Maximal number of iterations of the k-means algorithm.
         """
-        random_indices = np.random.choice(X.shape[0], size=self._n_clusters, replace=False)
+        random_indices = np.random.choice(
+            X.shape[0], size=self._n_clusters, replace=False
+        )
         cluster_centers = X[random_indices]
 
         for _ in range(max_iter):
@@ -53,9 +56,13 @@ class KMeans:
                 clusters[cluster_assignment].append(point)
                 labels[idx] = cluster_assignment
 
-            new_cluster_centers = np.array([self._calculate_cluster_center(cluster) for cluster in clusters])
+            new_cluster_centers = np.array(
+                [self._calculate_cluster_center(cluster) for cluster in clusters]
+            )
 
-            if np.all(np.linalg.norm(new_cluster_centers - cluster_centers, axis=1) < tol):
+            if np.all(
+                np.linalg.norm(new_cluster_centers - cluster_centers, axis=1) < tol
+            ):
                 break
 
             cluster_centers = new_cluster_centers

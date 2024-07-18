@@ -2,10 +2,12 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+
 class NaiveBayes:
     """
     Naive Bayes classifier for categorical data.
     """
+
     def __init__(self) -> None:
         """
         Initializes the NaiveBayes classifier.
@@ -39,7 +41,9 @@ class NaiveBayes:
         """
         class_counts = y.value_counts().to_dict()
         total_count = len(y)
-        self._prior_probabilities = {outcome: count / total_count for outcome, count in class_counts.items()}
+        self._prior_probabilities = {
+            outcome: count / total_count for outcome, count in class_counts.items()
+        }
 
     def _calc_likelihoods(self, X: pd.DataFrame, y: pd.Series) -> None:
         """
@@ -59,7 +63,9 @@ class NaiveBayes:
 
                 for outcome in self._outcomes:
                     outcome_count = sum(y == outcome)
-                    self._likelihoods[feature][feature_value][outcome] = feature_counts.at[feature_value, outcome] / outcome_count
+                    self._likelihoods[feature][feature_value][outcome] = (
+                        feature_counts.at[feature_value, outcome] / outcome_count
+                    )
 
     def predict(self, X: list[list[Any]]) -> list[Any]:
         """

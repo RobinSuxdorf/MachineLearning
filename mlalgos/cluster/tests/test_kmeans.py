@@ -2,6 +2,7 @@ import numpy as np
 
 from mlalgos.cluster import KMeans
 
+
 def test_kmeans() -> None:
     X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])
 
@@ -21,5 +22,3 @@ def test_kmeans() -> None:
     expected_prediction = np.array([1, 0])
 
     assert np.array_equal(expected_prediction, prediction)
-
-    
