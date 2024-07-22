@@ -1,3 +1,4 @@
+from typing import Optional
 import numpy as np
 
 
@@ -7,8 +8,8 @@ class KMeans:
         Initialization method for k-means clustering algorithm.
         """
         self._n_clusters = n_clusters
-        self._cluster_centers: np.ndarray = None
-        self._labels: np.ndarray = None
+        self._cluster_centers: Optional[np.ndarray] = None
+        self._labels: Optional[np.ndarray] = None
 
         np.random.seed(random_state)
 
