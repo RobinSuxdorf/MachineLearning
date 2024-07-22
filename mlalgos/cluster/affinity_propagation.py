@@ -11,15 +11,24 @@ class AffinityPropagation:
         preferences: Optional[np.ndarray] = None,
         random_state: Optional[int] = None,
     ) -> None:
-        pass
+        self._damping = damping
+        self._max_iter = max_iter
+        self._convergence_iter = convergence_iter
+        self._preferences = preferences
+        
+        if random_state:
+            np.random.seed(random_state)
+
+        self._cluster_centers: Optional[np.ndarray] = None
+        self._labels: Optional[np.ndarray] = None
 
     @property
     def cluster_centers(self) -> np.ndarray:
-        pass
+        return self._cluster_centers
 
     @property
     def labels(self) -> np.ndarray:
-        pass
+        return self._labels
 
     def fit(self, X: np.ndarray) -> None:
         pass
