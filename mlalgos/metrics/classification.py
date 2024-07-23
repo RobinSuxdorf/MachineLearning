@@ -28,7 +28,7 @@ def _check_type(list1: list[Any], list2: list[Any]) -> None:
     Raises:
         ValueError: If not all elements of list1 and list2 have the same type.
     """
-    if not list1:
+    if len(list1) == 0:
         raise ValueError("The first list is empty.")
 
     list_type = type(list1[0])
