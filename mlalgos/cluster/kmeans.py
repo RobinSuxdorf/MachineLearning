@@ -1,16 +1,18 @@
+from typing import Optional
 import numpy as np
 
 
 class KMeans:
-    def __init__(self, n_clusters: int = 2, random_state: int = 0) -> None:
+    def __init__(self, n_clusters: int = 2, random_state: Optional[int] = None) -> None:
         """
         Initialization method for k-means clustering algorithm.
         """
         self._n_clusters = n_clusters
-        self._cluster_centers: np.ndarray = None
-        self._labels: np.ndarray = None
+        self._cluster_centers: Optional[np.ndarray] = None
+        self._labels: Optional[np.ndarray] = None
 
-        np.random.seed(random_state)
+        if random_state:
+            np.random.seed(random_state)
 
     @property
     def cluster_centers(self) -> np.ndarray:
