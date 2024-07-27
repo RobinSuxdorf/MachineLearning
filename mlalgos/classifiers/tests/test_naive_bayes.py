@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 
 from mlalgos.preprocessing import split_features_and_target
