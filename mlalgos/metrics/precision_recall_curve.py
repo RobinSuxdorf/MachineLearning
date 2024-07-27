@@ -1,10 +1,11 @@
 from typing import Optional
 import numpy as np
+from mlalgos.helpers import check_length
 from mlalgos.metrics import confusion_matrix
 
 
 def precision_recall_curve(y_true: np.ndarray, y_scores: np.ndarray, pos_label: Optional[int] = None) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    # check for type and length?
+    check_length(y_true, y_scores)
 
     if not pos_label:
         # check whether y_true is in {-1, 1} or {0, 1}, otherwise raise a value error
