@@ -7,25 +7,33 @@ from mlalgos.metrics import confusion_matrix
 def precision_recall_curve(y_true: np.ndarray, y_scores: np.ndarray, pos_label: Optional[int] = None) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     check_length(y_true, y_scores)
 
-    if not pos_label:
-        # check whether y_true is in {-1, 1} or {0, 1}, otherwise raise a value error
-        pass
+    unique_elements = np.unique(y_true)
+    if len(unique_elements) > 2:
+        raise ValueError("y_true contains more than 2 different values.")
+
+    if pos_label is not None and pos_label not in unique_elements:
+        raise ValueError("pos_label is not contained in y_true.")
+
+    if pos_label is None:
+        pos_label = unique_elements[1]
+
+    neg_label = unique_elements[0] if pos_label != unique_elements[0] else unique_elements[1]
 
     precision: list[float] = []
     recall: list[float] = []
     thresholds = np.sort(y_scores)
 
     for threshold in thresholds:
-        predictions = np.array([1 if score >= threshold else 0 for score in y_scores]) # use pos_label
+        predictions = np.where(y_scores >= threshold, pos_label, neg_label)
 
-        cf_matrix = confusion_matrix(y_true, predictions, class_labels=[1, 0]) # use pos_label
+        cf_matrix = confusion_matrix(y_true, predictions, class_labels=[pos_label, neg_label])
 
         tp = cf_matrix[0][0]
         fp = cf_matrix[1][0]
         fn = cf_matrix[0][1]
 
-        precision_value = tp / (tp + fp)
-        recall_value = tp / (tp + fn)
+        precision_value = tp / (tp + fp) if (tp + fp) != 0 else 0
+        recall_value = tp / (tp + fn) if (tp + fn) != 0 else 0
 
         precision.append(precision_value)
         recall.append(recall_value)
@@ -33,7 +41,4 @@ def precision_recall_curve(y_true: np.ndarray, y_scores: np.ndarray, pos_label: 
     precision.append(1)
     recall.append(0)
 
-    precision = np.asarray(precision)
-    recall = np.asarray(recall)
-
-    return precision, recall, thresholds
+    return np.array(precision), np.array(recall), thresholds
