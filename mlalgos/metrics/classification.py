@@ -35,6 +35,7 @@ def confusion_matrix(
     Args:
         y_true (list[Any]): The list of true labels.
         y_pred (list[Any]): The list of predicted labels.
+        class_labels (Optional[list[Any]]): List of labels to index the matrix.
 
     Returns:
         np.ndarray: The confusion matrix as numpy array of arrays.
