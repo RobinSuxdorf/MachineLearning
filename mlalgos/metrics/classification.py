@@ -1,45 +1,6 @@
 from typing import Any, Optional
 import numpy as np
-
-
-def _check_length(list1: list[Any], list2: list[Any]) -> None:
-    """
-    Checks if the two lists have the same length.
-
-    Args:
-        list1 (list[Any]): The first list to check.
-        list2 (list[Any]): The second list to check.
-
-    Raises:
-        ValueError: If the lists do not have the same length.
-    """
-    if len(list1) != len(list2):
-        raise ValueError("The lists do not have the same length.")
-
-
-def _check_type(list1: list[Any], list2: list[Any]) -> None:
-    """
-    Checks if all elements in both lists are of the same type.
-
-    Args:
-        list1 (list[Any]): The first list to check.
-        lst2 (list[Any]): The second list to check.
-
-    Raises:
-        ValueError: If not all elements of list1 and list2 have the same type.
-    """
-    if not list1:
-        raise ValueError("The first list is empty.")
-
-    list_type = type(list1[0])
-
-    if not all(isinstance(entry, list_type) for entry in list1):
-        raise ValueError("Not all elements in the first list are of the same type.")
-
-    if not all(isinstance(entry, list_type) for entry in list2):
-        raise ValueError(
-            "Not all elements in the second list are of the same type as the first element of the first list."
-        )
+from mlalgos.helpers import check_length, check_type
 
 
 def accuracy_score(y_true: list[Any], y_pred: list[Any]) -> float:
@@ -53,8 +14,8 @@ def accuracy_score(y_true: list[Any], y_pred: list[Any]) -> float:
     Returns:
         float: The accuracy score as float between 0 and 1.
     """
-    _check_length(y_true, y_pred)
-    _check_type(y_true, y_pred)
+    check_length(y_true, y_pred)
+    check_type(y_true, y_pred)
 
     correct_predictions = sum(
         1
@@ -74,12 +35,13 @@ def confusion_matrix(
     Args:
         y_true (list[Any]): The list of true labels.
         y_pred (list[Any]): The list of predicted labels.
+        class_labels (Optional[list[Any]]): List of labels to index the matrix.
 
     Returns:
         np.ndarray: The confusion matrix as numpy array of arrays.
     """
-    _check_length(y_true, y_pred)
-    _check_type(y_true, y_pred)
+    check_length(y_true, y_pred)
+    check_type(y_true, y_pred)
 
     if class_labels is None:
         class_labels = np.union1d(y_true, y_pred)
@@ -114,8 +76,8 @@ class ClassificationReport:
             y_true (list[Any]): The true class labels.
             y_pred (list[Any]): The predicted class labels.
         """
-        _check_length(y_true, y_pred)
-        _check_type(y_true, y_pred)
+        check_length(y_true, y_pred)
+        check_type(y_true, y_pred)
 
         self._report: dict[str, dict[str, Any]] = {}
 
