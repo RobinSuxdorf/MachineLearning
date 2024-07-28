@@ -4,7 +4,9 @@ from mlalgos.helpers import check_length
 from mlalgos.metrics import confusion_matrix
 
 
-def precision_recall_curve(y_true: np.ndarray, y_scores: np.ndarray, pos_label: Optional[int] = None) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def precision_recall_curve(
+    y_true: np.ndarray, y_scores: np.ndarray, pos_label: Optional[int] = None
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Calculates precision-recall pairs for different thresholds.
 
@@ -28,7 +30,9 @@ def precision_recall_curve(y_true: np.ndarray, y_scores: np.ndarray, pos_label: 
     if pos_label is None:
         pos_label = unique_elements[1]
 
-    neg_label = unique_elements[0] if pos_label != unique_elements[0] else unique_elements[1]
+    neg_label = (
+        unique_elements[0] if pos_label != unique_elements[0] else unique_elements[1]
+    )
 
     precision: list[float] = []
     recall: list[float] = []
@@ -37,7 +41,9 @@ def precision_recall_curve(y_true: np.ndarray, y_scores: np.ndarray, pos_label: 
     for threshold in thresholds:
         predictions = np.where(y_scores >= threshold, pos_label, neg_label)
 
-        cf_matrix = confusion_matrix(y_true, predictions, class_labels=[pos_label, neg_label])
+        cf_matrix = confusion_matrix(
+            y_true, predictions, class_labels=[pos_label, neg_label]
+        )
 
         tp = cf_matrix[0][0]
         fp = cf_matrix[1][0]

@@ -1,5 +1,6 @@
 from typing import Any
 
+
 def check_length(list1: list[Any], list2: list[Any]) -> None:
     """
     Checks if the two lists have the same length.

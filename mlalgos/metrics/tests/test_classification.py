@@ -15,17 +15,29 @@ def test_accuracy_sccore() -> None:
 
     assert accuracy == expected_accuracy
 
+
 @pytest.mark.parametrize(
     "y_true, y_pred, class_labels, expected_cm",
     [
         ([1, 0, 1, 1, 0, 0], [1, 1, 0, 1, 0, 1], None, np.array([[1, 2], [1, 2]])),
-        ([0, 1, 2, 1, 2, 0, 1, 2], [0, 2, 1, 0, 2, 1, 0, 1], None, np.array([[1, 1, 0], [2, 0, 1], [0, 2, 1]])),
-        ([1, 0, 1, 1, 0, 0], [1, 1, 0, 1, 0, 1], [1, 0], np.array([[2, 1], [2, 1]]))
-    ]
+        (
+            [0, 1, 2, 1, 2, 0, 1, 2],
+            [0, 2, 1, 0, 2, 1, 0, 1],
+            None,
+            np.array([[1, 1, 0], [2, 0, 1], [0, 2, 1]]),
+        ),
+        ([1, 0, 1, 1, 0, 0], [1, 1, 0, 1, 0, 1], [1, 0], np.array([[2, 1], [2, 1]])),
+    ],
 )
-def test_confusion_matrix(y_true: list[Any], y_pred: list[Any], class_labels: Optional[list[Any]], expected_cm: np.ndarray) -> None:
+def test_confusion_matrix(
+    y_true: list[Any],
+    y_pred: list[Any],
+    class_labels: Optional[list[Any]],
+    expected_cm: np.ndarray,
+) -> None:
     cm = confusion_matrix(y_true, y_pred, class_labels)
     assert np.array_equal(cm, expected_cm)
+
 
 def test_classification_report() -> None:
     y_true = [0, 2, 1, 2, 1, 1, 0, 1]
