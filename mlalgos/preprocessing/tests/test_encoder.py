@@ -20,3 +20,5 @@ def test_one_hot_encoder_fit_transform(X: np.ndarray, expected: np.ndarray) -> N
 # test inverse transform
 
 # test error handling
+
+# test non np input
