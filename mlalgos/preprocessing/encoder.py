@@ -1,9 +1,9 @@
-from typing import Any, Union
+from typing import Any, Literal, Union
 import numpy as np
 
 
-class OneHotEncoder():
-    def __init__(self, handle_unknown: str = "error") -> None:
+class OneHotEncoder:
+    def __init__(self, handle_unknown: Literal["error", "ignore"] = "error") -> None:
         self._handle_unknown = handle_unknown
         self._categories: list[np.ndarray] = []
         self._value_to_idx: dict[Any, int] = {}
@@ -27,7 +27,7 @@ class OneHotEncoder():
                 self._idx_to_value[idx] = value
 
                 idx += 1
-        
+
         self._dimension = idx
 
     def _row_to_one_hot(self, row: np.ndarray) -> np.ndarray:
@@ -60,7 +60,9 @@ class OneHotEncoder():
 
     def _inverse_single_vector(self, one_hot: np.ndarray) -> np.ndarray:
         if self._handle_unknown == "error" and np.sum(one_hot) != len(self._categories):
-            raise ValueError(f"The one hot encoded vector {one_hot} does not match the fitting data.")
+            raise ValueError(
+                f"The one hot encoded vector {one_hot} does not match the fitting data."
+            )
 
         data: list[Any] = []
 
