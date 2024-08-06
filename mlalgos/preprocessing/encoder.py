@@ -3,7 +3,17 @@ import numpy as np
 
 
 class OneHotEncoder:
+    """
+    A one-hot encoder for categorical features.
+    """
+
     def __init__(self, handle_unknown: Literal["error", "ignore"] = "error") -> None:
+        """
+        Initializes the OneHotEncoder.
+
+        Args:
+            handle_unknown (Literal['error', 'ignore']): Strategy for handling unknown values.
+        """
         self._handle_unknown = handle_unknown
         self._categories: list[np.ndarray] = []
         self._value_to_idx: dict[Any, int] = {}
@@ -11,6 +21,15 @@ class OneHotEncoder:
         self._dimension: int = 0
 
     def fit(self, X: Union[np.ndarray, list[Any]]) -> None:
+        """
+        Fit the encoder with the provided data.
+
+        This method computes the unique values for each column in the data and builds
+        the mappings between values and indices.
+
+        Args:
+            X (Union[np.ndarray, list[Any]]): Input data, which can be a numpy array or a list-like object.
+        """
         if isinstance(X, list):
             X = np.array(X, dtype=object)
 
@@ -31,6 +50,15 @@ class OneHotEncoder:
         self._dimension = idx
 
     def _row_to_one_hot(self, row: np.ndarray) -> np.ndarray:
+        """
+        Convert a row of data to a one-hot encoded vector.
+
+        Args:
+            row (np.ndarray): Input row of data.
+
+        Returns:
+            np.ndarray: One-hot encoded vector.
+        """
         one_hot = np.zeros(self._dimension)
 
         ids: list[int] = []
@@ -46,6 +74,18 @@ class OneHotEncoder:
         return one_hot
 
     def transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+        """
+        Transform the input data to one-hot encoded format.
+
+        This method converts each row of the input data to a one-hot encoded vector based
+        on the fitted categories.
+
+        Args:
+            X (Union[np.ndarray, list[Any]]): Input data, which can be a numpy array or a list-like object.
+
+        Returns:
+            np.ndarray: One-hot encoded data as a numpy array.
+        """
         if isinstance(X, list):
             X = np.array(X, dtype=object)
 
@@ -54,11 +94,31 @@ class OneHotEncoder:
 
         return np.array([self._row_to_one_hot(row) for row in X])
 
-    def fit_transform(self, X: np.ndarray) -> np.ndarray:
+    def fit_transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+        """
+        Fit the encoder and transform the data in one step.
+
+        This method combines `fit` and `transform` operations into a single step.
+
+        Args:
+            X (Union[np.ndarray, list[Any]]): Input data, which can be a numpy array or a list-like object.
+
+        Returns:
+            np.ndarray: One-hot encoded data as a numpy array.
+        """
         self.fit(X)
         return self.transform(X)
 
     def _inverse_single_vector(self, one_hot: np.ndarray) -> np.ndarray:
+        """
+        Inverse transform a single one-hot encoded vector.
+
+        Args:
+            one_hot (np.ndarray): One-hot encoded vector.
+
+        Returns:
+            np.ndarray: Reconstructed original data.
+        """
         if self._handle_unknown == "error" and np.sum(one_hot) != len(self._categories):
             raise ValueError(
                 f"The one hot encoded vector {one_hot} does not match the fitting data."
@@ -79,6 +139,17 @@ class OneHotEncoder:
         return np.array(data, dtype=object)
 
     def inverse_transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+        """
+        Inverse transform from one-hot encoded data to original values.
+
+        This method converts one-hot encoded vectors back to the original categorical values.
+
+        Args:
+            X (Union[np.ndarray, list[Any]]): One-hot encoded data, which can be a numpy array or a list-like object.
+
+        Returns:
+            np.ndarray: The original data reconstructed from one-hot encoded vectors.
+        """
         if isinstance(X, list):
             X = np.array(X, dtype=object)
 
