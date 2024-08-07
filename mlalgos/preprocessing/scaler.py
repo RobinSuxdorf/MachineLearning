@@ -10,6 +10,14 @@ class StandardScaler:
         self._mean: Optional[np.ndarray] = None
         self._std: Optional[np.ndarray] = None
 
+    @property
+    def mean(self) -> Optional[np.ndarray]:
+        return self._mean
+
+    @property
+    def std(self) -> Optional[np.ndarray]:
+        return self._std
+
     def fit(self, X: Union[np.ndarray, list[Any]]) -> None:
         if isinstance(X, list):
             X = np.array(X)
