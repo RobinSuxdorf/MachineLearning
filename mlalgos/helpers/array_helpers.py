@@ -1,5 +1,23 @@
 from typing import Any
+from mlalgos import ArrayLike
+import numpy as np
 
+
+def check_array(X: ArrayLike) -> np.ndarray:
+    """
+    Validates and converts input data to a numpy array.
+
+    Args:
+        X (ArrayLike): The input data to be checked and converted. This can be a list or a numpy array.
+
+    Returns:
+        np.ndarray: The validated and possibly converted input as a numpy array.
+    """
+    if isinstance(X, list):
+        X = np.array(X)
+    if not isinstance(X, np.ndarray):
+        raise ValueError("Input must be a numpy array or a list.")
+    return X
 
 def check_length(list1: list[Any], list2: list[Any]) -> None:
     """
