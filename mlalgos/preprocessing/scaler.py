@@ -57,7 +57,7 @@ class StandardScaler:
         return X
 
 class MinMaxScaler:
-    def __init__(self, feature_range: tuple[float, float]) -> None:
+    def __init__(self, feature_range: tuple[float, float] = (0, 1)) -> None:
         if feature_range[0] >= feature_range[1]:
             raise ValueError("The first value of feature_range must be smaller than the second value.")
 
@@ -73,7 +73,7 @@ class MinMaxScaler:
 
     @property
     def max_(self) -> float:
-        return self._data_max 
+        return self._max 
 
     @property
     def data_min_(self) -> float:

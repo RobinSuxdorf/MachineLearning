@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from typing import Any, Union
-from mlalgos.preprocessing import StandardScaler
+from mlalgos.preprocessing import MinMaxScaler, StandardScaler
 
 @pytest.mark.parametrize(
     "X, expected_transformed, with_mean, with_std", [
@@ -49,3 +49,28 @@ def test_standard_scaler_transform_inverse_transform(
     inverse_transformed = standard_scaler.inverse_transform(transformed)
 
     assert np.array_equal(inverse_transformed, input)
+
+def test_min_max_scaler_initialization() -> None:
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    assert scaler.min_ == 0
+    assert scaler.max_ == 1
+
+    with pytest.raises(ValueError):
+        MinMaxScaler(feature_range=(1, 0))
+
+def test_min_max_scaler_fit_transform() -> None:
+    X = [[1, 2], [3, 4], [5, 6]]
+    scaler = MinMaxScaler()
+
+    X_scaled = scaler.fit_transform(X)
+    expected_scaled = np.array([[0, 0], [0.5, 0.5], [1, 1]])
+    assert np.array_equal(X_scaled, expected_scaled)
+
+def test_min_max_scaler_inverse_transform() -> None:
+    X = [[-1, 2], [-0.5, 6], [0, 10], [1, 18]]
+    scaler = MinMaxScaler()
+    scaler.fit(X)
+
+    inverse_transformed = scaler.inverse_transform([[1.5, 0]])
+    expected = np.array([[2, 2]])
+    assert np.array_equal(inverse_transformed, expected)
