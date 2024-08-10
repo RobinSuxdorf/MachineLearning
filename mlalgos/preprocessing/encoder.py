@@ -1,4 +1,6 @@
-from typing import Any, Literal, Union
+from typing import Any, Literal
+from mlalgos import ArrayLike
+from mlalgos.helpers import check_array
 import numpy as np
 
 
@@ -20,7 +22,7 @@ class OneHotEncoder:
         self._idx_to_value: dict[int, Any] = {}
         self._dimension: int = 0
 
-    def fit(self, X: Union[np.ndarray, list[Any]]) -> None:
+    def fit(self, X: ArrayLike) -> None:
         """
         Fit the encoder with the provided data.
 
@@ -28,10 +30,9 @@ class OneHotEncoder:
         the mappings between values and indices.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): Input data, which can be a numpy array or a list-like object.
+            X (ArrayLike): Input data, which can be a numpy array or a list-like object.
         """
-        if isinstance(X, list):
-            X = np.array(X, dtype=object)
+        X = check_array(X)
 
         if X.ndim == 1:
             X = X.reshape(-1, 1)
@@ -73,7 +74,7 @@ class OneHotEncoder:
         one_hot[ids] = 1
         return one_hot
 
-    def transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+    def transform(self, X: ArrayLike) -> np.ndarray:
         """
         Transform the input data to one-hot encoded format.
 
@@ -81,27 +82,26 @@ class OneHotEncoder:
         on the fitted categories.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): Input data, which can be a numpy array or a list-like object.
+            X (ArrayLike): Input data, which can be a numpy array or a list-like object.
 
         Returns:
             np.ndarray: One-hot encoded data as a numpy array.
         """
-        if isinstance(X, list):
-            X = np.array(X, dtype=object)
+        X = check_array(X)
 
         if X.ndim == 1:
             X = X.reshape(-1, 1)
 
         return np.array([self._row_to_one_hot(row) for row in X])
 
-    def fit_transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+    def fit_transform(self, X: ArrayLike) -> np.ndarray:
         """
         Fit the encoder and transform the data in one step.
 
         This method combines `fit` and `transform` operations into a single step.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): Input data, which can be a numpy array or a list-like object.
+            X (ArrayLike): Input data, which can be a numpy array or a list-like object.
 
         Returns:
             np.ndarray: One-hot encoded data as a numpy array.
@@ -136,24 +136,23 @@ class OneHotEncoder:
             if not found:
                 data.append(None)
 
-        return np.array(data, dtype=object)
+        return np.array(data)
 
-    def inverse_transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+    def inverse_transform(self, X: ArrayLike) -> np.ndarray:
         """
         Inverse transform from one-hot encoded data to original values.
 
         This method converts one-hot encoded vectors back to the original categorical values.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): One-hot encoded data, which can be a numpy array or a list-like object.
+            X (ArrayLike): One-hot encoded data, which can be a numpy array or a list-like object.
 
         Returns:
             np.ndarray: The original data reconstructed from one-hot encoded vectors.
         """
-        if isinstance(X, list):
-            X = np.array(X, dtype=object)
+        X = check_array(X)
 
         if X.ndim == 1:
-            return self._inverse_single_vector(X)
+            X = X.reshape(1, -1)
 
-        return np.array([self._inverse_single_vector(x) for x in X], dtype=object)
+        return np.array([self._inverse_single_vector(x) for x in X])

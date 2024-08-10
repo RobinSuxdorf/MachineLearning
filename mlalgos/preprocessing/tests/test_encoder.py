@@ -11,24 +11,24 @@ from mlalgos.preprocessing import OneHotEncoder
         (
             [0, 1, 2, 1, 0],
             np.array(
-                [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]], dtype=object
+                [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
             ),
         ),
         (
-            np.array([0, 1, 2, 1, 0], dtype=object),
+            np.array([0, 1, 2, 1, 0]),
             np.array(
-                [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]], dtype=object
+                [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
             ),
         ),
         (
             ["bird", "cat", "dog", "cat", "bird"],
             np.array(
-                [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]], dtype=object
+                [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
             ),
         ),
         (
-            np.array([["Male", 1], ["Female", 3], ["Female", 2]], dtype=object),
-            np.array([[0, 1, 1, 0, 0], [1, 0, 0, 0, 1], [1, 0, 0, 1, 0]], dtype=object),
+            np.array([["Male", 1], ["Female", 3], ["Female", 2]]),
+            np.array([[0, 1, 1, 0, 0], [1, 0, 0, 0, 1], [1, 0, 0, 1, 0]]),
         ),
     ],
 )
@@ -44,23 +44,23 @@ def test_one_hot_encoder_handle_unknown_error() -> None:
     with pytest.raises(KeyError, match=r"The value '(\S+)' is unknown."):
         encoder = OneHotEncoder("error")
 
-        X = np.array([0, 1, 2, 1, 0], dtype=object)
+        X = np.array([0, 1, 2, 1, 0])
 
         encoder.fit(X)
 
-        encoder.transform(np.array([0, 1, 2, 4], dtype=object))
+        encoder.transform(np.array([0, 1, 2, 4]))
 
 
 def test_one_hot_encoder_handle_unknown_ignore() -> None:
     encoder = OneHotEncoder("ignore")
 
-    X = np.array([0, 1, 2, 1, 0], dtype=object)
+    X = np.array([0, 1, 2, 1, 0])
 
     encoder.fit(X)
 
-    transformed = encoder.transform(np.array([0, 1, 2, 3], dtype=object))
+    transformed = encoder.transform(np.array([0, 1, 2, 3]))
 
-    expected = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 0, 0]], dtype=object)
+    expected = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 0, 0]])
 
     assert np.array_equal(transformed, expected)
 
@@ -68,11 +68,11 @@ def test_one_hot_encoder_handle_unknown_ignore() -> None:
 @pytest.mark.parametrize(
     "X, encoded_vector, expected",
     [
-        ([0, 1, 2, 1, 0], [0, 1, 0], np.array([1], dtype=object)),
+        ([0, 1, 2, 1, 0], [0, 1, 0], np.array([[1]])),
         (
             [["Male", 1], ["Female", 3], ["Female", 2]],
             [[1, 0, 0, 0, 1], [0, 1, 0, 1, 0]],
-            np.array([["Female", 3], ["Male", 2]], dtype=object),
+            np.array([["Female", 3], ["Male", 2]]),
         ),
     ],
 )
@@ -95,7 +95,7 @@ def test_one_hot_encoder_inverse_transform_handle_unknown_error() -> None:
     ):
         encoder = OneHotEncoder("error")
 
-        X = np.array([["Male", 1], ["Female", 3], ["Female", 2]], dtype=object)
+        X = np.array([["Male", 1], ["Female", 3], ["Female", 2]])
 
         encoder.fit(X)
 
@@ -105,12 +105,12 @@ def test_one_hot_encoder_inverse_transform_handle_unknown_error() -> None:
 def test_one_hot_encoder_inverse_transform_handle_unknown_ignore() -> None:
     encoder = OneHotEncoder("ignore")
 
-    X = np.array([["Male", 1], ["Female", 3], ["Female", 2]], dtype=object)
+    X = np.array([["Male", 1], ["Female", 3], ["Female", 2]])
 
     encoder.fit(X)
 
     inverse_transformed = encoder.inverse_transform([[0, 1, 1, 0, 0], [0, 0, 0, 1, 0]])
 
-    expected = np.array([["Male", 1], [None, 2]], dtype=object)
+    expected = np.array([["Male", '1'], [None, '2']])
 
     assert np.array_equal(inverse_transformed, expected)
