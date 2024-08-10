@@ -1,4 +1,6 @@
 from typing import Optional
+from mlalgos import ArrayLike
+from mlalgos.helpers import check_array
 import numpy as np
 
 
@@ -8,7 +10,7 @@ class AffinityPropagation:
         damping: float = 0.5,
         max_iter: int = 300,
         convergence_iter: int = 15,
-        preferences: Optional[np.ndarray] = None,
+        preferences: Optional[ArrayLike] = None,
         random_state: Optional[int] = None,
     ) -> None:
         """
@@ -18,13 +20,13 @@ class AffinityPropagation:
             damping (float): Damping factor between 0.5 and 1.
             max_iter (int): Maximum number of iterations.
             convergence_iter (int): Number of iterations with no change in exemplars to declare convergence.
-            preferences (Optional[np.ndarray]): Preferences for each data point. If None, set to median similarity.
+            preferences (Optional[ArrayLike]): Preferences for each data point. If None, set to median similarity.
             random_state (Optional[int]): Random seed for reproducibility.
         """
         self._damping = damping
         self._max_iter = max_iter
         self._convergence_iter = convergence_iter
-        self._preferences = preferences
+        self._preferences = check_array(preferences) if preferences else None
 
         if random_state:
             np.random.seed(random_state)
@@ -146,14 +148,16 @@ class AffinityPropagation:
 
         return labels
 
-    def fit(self, X: np.ndarray) -> None:
+    def fit(self, X: ArrayLike) -> None:
         """
         Compute the affinity propagation clustering.
 
         Args:
-            X (np.ndarray): Training examples to cluster.
+            X (ArrayLike): Training examples to cluster.
 
         """
+        X = check_array(X)
+
         self._calculate_similarity_matrix(X)
 
         if self._preferences is None:
@@ -197,16 +201,18 @@ class AffinityPropagation:
         self._cluster_centers = X[exemplars]
         self._labels = self._assign_labels(X, exemplars)
 
-    def predict(self, X: np.ndarray) -> np.ndarray:
+    def predict(self, X: ArrayLike) -> np.ndarray:
         """
         Predict the closest exemplar each example in X belongs to.
 
         Args:
-            X (np.ndarray): The data to predict.
+            X (ArrayLike): The data to predict.
 
         Returns:
             np.ndarray: The indices of the exemplar each sample belongs to.
         """
+        X = check_array(X)
+
         return np.array(
             [
                 np.argmax(

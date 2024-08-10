@@ -1,5 +1,7 @@
 import numpy as np
-from typing import Any, Optional, Union
+from typing import Optional
+from mlalgos import ArrayLike
+from mlalgos.helpers import check_array
 
 
 class StandardScaler:
@@ -45,16 +47,14 @@ class StandardScaler:
             raise AttributeError("std_ is not set. You need to call 'fit' first.")
         return self._std
 
-    def fit(self, X: Union[np.ndarray, list[Any]]) -> None:
+    def fit(self, X: ArrayLike) -> None:
         """
         Computes the mean and standard deviation for each feature in the dataset.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): The input data to fit, where each row represents a sample and each column represents a feature.
+            X (ArrayLike): The input data to fit, where each row represents a sample and each column represents a feature.
         """
-
-        if isinstance(X, list):
-            X = np.array(X)
+        X = check_array(X)
 
         if self._with_mean:
             self._mean = np.mean(X, axis=0)
@@ -62,18 +62,17 @@ class StandardScaler:
         if self._with_std:
             self._std = np.std(X, axis=0)
 
-    def transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+    def transform(self, X: ArrayLike) -> np.ndarray:
         """
         Transforms the input data using the mean and standard deviation computed during fitting.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): The data to transform, where each row represents a sample and each column represents a feature.
+            X (ArrayLike): The data to transform, where each row represents a sample and each column represents a feature.
 
         Returns:
             np.ndarray: The transformed data.
         """
-        if isinstance(X, list):
-            X = np.array(X)
+        X = check_array(X)
 
         if self._with_mean and self._mean is not None:
             X = X - self._mean
@@ -83,12 +82,12 @@ class StandardScaler:
 
         return X
 
-    def fit_transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+    def fit_transform(self, X: ArrayLike) -> np.ndarray:
         """
         Fits the scaler to the data and then transforms it.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): The data to fit and transform, where each row represents a sample and each column represents a feature.
+            X (ArrayLike): The data to fit and transform, where each row represents a sample and each column represents a feature.
 
         Returns:
             np.ndarray: The transformed data.
@@ -96,18 +95,17 @@ class StandardScaler:
         self.fit(X)
         return self.transform(X)
 
-    def inverse_transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+    def inverse_transform(self, X: ArrayLike) -> np.ndarray:
         """
         Reverts the scaling applied by the transform method.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): The data to inverse transform, where each row represents a sample and each column represents a feature.
+            X (ArrayLike): The data to inverse transform, where each row represents a sample and each column represents a feature.
 
         Returns:
             np.ndarray: The data in its original form before scaling.
         """
-        if isinstance(X, list):
-            X = np.array(X)
+        X = check_array(X)
 
         if self._with_std and self._std is not None:
             X = X * self._std
@@ -198,15 +196,14 @@ class MinMaxScaler:
             raise AttributeError("scale_ is not set. You need to call 'fit' first.")
         return self._scale
 
-    def fit(self, X: Union[np.ndarray, list[Any]]) -> None:
+    def fit(self, X: ArrayLike) -> None:
         """
         Computes the minimum and maximum to be used for later scaling.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): The input data to compute the per-feature minimum and maximum.
+            X (ArrayLike): The input data to compute the per-feature minimum and maximum.
         """
-        if isinstance(X, list):
-            X = np.array(X)
+        X = check_array(X)
 
         self._data_min = X.min(axis=0)
         self._data_max = X.max(axis=0)
@@ -214,27 +211,26 @@ class MinMaxScaler:
         self._scale = (self._max - self._min) / (self.data_max_ - self.data_min_)
         return self
 
-    def transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+    def transform(self, X: ArrayLike) -> np.ndarray:
         """
         Scales the input data according to the feature range specified during initialization.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): The data to scale.
+            X (ArrayLike): The data to scale.
 
         Returns:
             np.ndarray: The transformed data.
         """
-        if isinstance(X, list):
-            X = np.array(X)
+        X = check_array(X)
 
         return (X - self._data_min) * self._scale + self._min
 
-    def fit_transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+    def fit_transform(self, X: ArrayLike) -> np.ndarray:
         """
         Fits the scaler to the data and then transforms it.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): The data to fit and transform.
+            X (ArrayLike): The data to fit and transform.
 
         Returns:
             np.ndarray: The transformed data.
@@ -243,18 +239,16 @@ class MinMaxScaler:
         self.fit(X)
         return self.transform(X)
 
-    def inverse_transform(self, X: Union[np.ndarray, list[Any]]) -> np.ndarray:
+    def inverse_transform(self, X: ArrayLike) -> np.ndarray:
         """
         Reverts the scaling applied by the transform method.
 
         Args:
-            X (Union[np.ndarray, list[Any]]): The data to inverse transform.
+            X (ArrayLike): The data to inverse transform.
 
         Returns:
             np.ndarray: The data in its original form before scaling.
         """
-
-        if isinstance(X, list):
-            X = np.array(X)
+        X = check_array(X)
 
         return (X - self._min) / self._scale + self._data_min

@@ -1,23 +1,25 @@
 from typing import Optional
 import numpy as np
-from mlalgos.helpers import check_length
+from mlalgos import ArrayLike
+from mlalgos.helpers import check_array, check_length
 from mlalgos.metrics import confusion_matrix
 
 
 def precision_recall_curve(
-    y_true: np.ndarray, y_scores: np.ndarray, pos_label: Optional[int] = None
+    y_true: ArrayLike, y_scores: ArrayLike, pos_label: Optional[int] = None
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Calculates precision-recall pairs for different thresholds.
 
     Args:
-        y_true (np.ndarray): Array of true binary labels.
-        y_scores (np.ndarray): Target values.
+        y_true (ArrayLike): Array of true binary labels.
+        y_scores (ArrayLike): Target values.
         pos_label (Optional[int]): The label of the positive class.
 
     Returns:
         tuple[np.ndarray, np.ndarray, np.ndarray]: The precision and recall values for certain thresholds.
     """
+    y_true, y_scores = check_array(y_true, y_scores)
     check_length(y_true, y_scores)
 
     unique_elements = np.unique(y_true)

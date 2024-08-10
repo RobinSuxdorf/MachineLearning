@@ -1,19 +1,21 @@
 from typing import Any, Optional
 import numpy as np
-from mlalgos.helpers import check_length, check_type
+from mlalgos import ArrayLike
+from mlalgos.helpers import check_array, check_length, check_type
 
 
-def accuracy_score(y_true: list[Any], y_pred: list[Any]) -> float:
+def accuracy_score(y_true: ArrayLike, y_pred: ArrayLike) -> float:
     """
     Calculates the accuracy score, which is the proportion of correct predictions.
 
     Args:
-        y_true (list[Any]): The list of true labels.
-        y_pred (list[Any]): The list of predicted labels.
+        y_true (ArrayLike): The list of true labels.
+        y_pred (ArrayLike): The list of predicted labels.
 
     Returns:
         float: The accuracy score as float between 0 and 1.
     """
+    y_true, y_pred = check_array(y_true, y_pred)
     check_length(y_true, y_pred)
     check_type(y_true, y_pred)
 
@@ -27,19 +29,20 @@ def accuracy_score(y_true: list[Any], y_pred: list[Any]) -> float:
 
 
 def confusion_matrix(
-    y_true: list[Any], y_pred: list[Any], class_labels: Optional[list[Any]] = None
+    y_true: ArrayLike, y_pred: ArrayLike, class_labels: Optional[ArrayLike] = None
 ) -> np.ndarray:
     """
     Calculates the confusion matrix.
 
     Args:
-        y_true (list[Any]): The list of true labels.
-        y_pred (list[Any]): The list of predicted labels.
-        class_labels (Optional[list[Any]]): List of labels to index the matrix.
+        y_true (ArrayLike): The list of true labels.
+        y_pred (ArrayLike): The list of predicted labels.
+        class_labels (Optional[ArrayLike]): List of labels to index the matrix.
 
     Returns:
         np.ndarray: The confusion matrix as numpy array of arrays.
     """
+    y_true, y_pred = check_array(y_true, y_pred)
     check_length(y_true, y_pred)
     check_type(y_true, y_pred)
 
@@ -67,15 +70,16 @@ class ClassificationReport:
     as well as overall accuracy.
     """
 
-    def __init__(self, y_true: list[Any], y_pred: list[Any]) -> None:
+    def __init__(self, y_true: ArrayLike, y_pred: ArrayLike) -> None:
         """
         Initializes the ClassificationReport with the true and predicted labels, computes the confusion matrix,
         and calculates precision, recall, F1-score, and support for each class.
 
         Args:
-            y_true (list[Any]): The true class labels.
-            y_pred (list[Any]): The predicted class labels.
+            y_true (ArrayLike): The true class labels.
+            y_pred (ArrayLike): The predicted class labels.
         """
+        y_true, y_pred = check_array(y_true, y_pred)
         check_length(y_true, y_pred)
         check_type(y_true, y_pred)
 
