@@ -3,21 +3,28 @@ from mlalgos import ArrayLike
 import numpy as np
 
 
-def check_array(X: ArrayLike) -> np.ndarray:
+def check_array(*args: ArrayLike) -> list[np.ndarray]:
     """
-    Validates and converts input data to a numpy array.
+    Convert input lists to numpy arrays and validate all inputs.
 
-    Args:
-        X (ArrayLike): The input data to be checked and converted. This can be a list or a numpy array.
+    This function accepts one or more inputs, each of which can be either a numpy array or a list. 
+    If an input is a list, it is converted to a numpy array. The function then checks that all 
+    inputs are numpy arrays (either originally or after conversion). 
+
+    Parameters:
+        *args (ArrayLike): One or more inputs, each of which can be either a numpy array or a list.
 
     Returns:
-        np.ndarray: The validated and possibly converted input as a numpy array.
+        np.ndarray | list[np.ndarray]: 
+            If a single argument is provided, returns the corresponding numpy array. 
+            If multiple arguments are provided, returns a list of numpy arrays.
     """
-    if isinstance(X, list):
-        X = np.array(X)
-    if not isinstance(X, np.ndarray):
-        raise ValueError("Input must be a numpy array or a list.")
-    return X
+    result = [np.array(X) if isinstance(X, list) else X for X in args]
+
+    if any(not isinstance(X, np.ndarray) for X in result):
+        raise ValueError("All inputs must be numpy arrays or lists.")
+
+    return result[0] if len(result) == 1 else result
 
 
 def check_length(list1: list[Any], list2: list[Any]) -> None:
