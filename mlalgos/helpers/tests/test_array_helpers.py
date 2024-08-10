@@ -1,7 +1,23 @@
 import pytest
 from contextlib import nullcontext
 from typing import Any, ContextManager
-from mlalgos.helpers import check_length, check_type
+from mlalgos import ArrayLike
+import numpy as np
+from mlalgos.helpers import check_array, check_length, check_type
+
+
+@pytest.mark.parametrize(
+    "X, expectation",
+    [([1, 2, 3], np.array([1, 2, 3])), (np.array([1, 2, 3]), np.array([1, 2, 3]))],
+)
+def test_check_array(X: ArrayLike, expectation: np.ndarray) -> None:
+    assert np.array_equal(check_array(X), expectation)
+
+
+@pytest.mark.parametrize("X", [1, 3.14, "Hello World", True])
+def test_check_array_wrong_type(X: Any) -> None:
+    with pytest.raises(ValueError):
+        check_array(X)
 
 
 @pytest.mark.parametrize(

@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any
 import numpy as np
 
-type ArrayLike = Union[np.ndarray, list[Any]]
+ArrayLike = np.ndarray | list[Any]

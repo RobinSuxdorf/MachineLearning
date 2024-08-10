@@ -19,6 +19,7 @@ def check_array(X: ArrayLike) -> np.ndarray:
         raise ValueError("Input must be a numpy array or a list.")
     return X
 
+
 def check_length(list1: list[Any], list2: list[Any]) -> None:
     """
     Checks if the two lists have the same length.
