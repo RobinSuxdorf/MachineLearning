@@ -8,13 +8,11 @@ from mlalgos.helpers import check_array, check_length, check_type
 
 @pytest.mark.parametrize(
     "X, expectation",
-    [
-        ([1, 2, 3], np.array([1, 2, 3])), 
-        (np.array([1, 2, 3]), np.array([1, 2, 3]))
-    ],
+    [([1, 2, 3], np.array([1, 2, 3])), (np.array([1, 2, 3]), np.array([1, 2, 3]))],
 )
 def test_check_array_single_list(X: ArrayLike, expectation: np.ndarray) -> None:
     assert np.array_equal(check_array(X), expectation)
+
 
 def test_check_array_multiple_lists() -> None:
     X = check_array([1, 2], np.array([3, 4]))

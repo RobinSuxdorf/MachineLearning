@@ -10,21 +10,15 @@ from mlalgos.preprocessing import OneHotEncoder
     [
         (
             [0, 1, 2, 1, 0],
-            np.array(
-                [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
-            ),
+            np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]),
         ),
         (
             np.array([0, 1, 2, 1, 0]),
-            np.array(
-                [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
-            ),
+            np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]),
         ),
         (
             ["bird", "cat", "dog", "cat", "bird"],
-            np.array(
-                [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]
-            ),
+            np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]]),
         ),
         (
             np.array([["Male", 1], ["Female", 3], ["Female", 2]]),
@@ -111,6 +105,6 @@ def test_one_hot_encoder_inverse_transform_handle_unknown_ignore() -> None:
 
     inverse_transformed = encoder.inverse_transform([[0, 1, 1, 0, 0], [0, 0, 0, 1, 0]])
 
-    expected = np.array([["Male", '1'], [None, '2']])
+    expected = np.array([["Male", "1"], [None, "2"]])
 
     assert np.array_equal(inverse_transformed, expected)

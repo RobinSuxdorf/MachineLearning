@@ -7,16 +7,16 @@ def check_array(*args: ArrayLike) -> list[np.ndarray]:
     """
     Convert input lists to numpy arrays and validate all inputs.
 
-    This function accepts one or more inputs, each of which can be either a numpy array or a list. 
-    If an input is a list, it is converted to a numpy array. The function then checks that all 
-    inputs are numpy arrays (either originally or after conversion). 
+    This function accepts one or more inputs, each of which can be either a numpy array or a list.
+    If an input is a list, it is converted to a numpy array. The function then checks that all
+    inputs are numpy arrays (either originally or after conversion).
 
-    Parameters:
+    Args:
         *args (ArrayLike): One or more inputs, each of which can be either a numpy array or a list.
 
     Returns:
-        np.ndarray | list[np.ndarray]: 
-            If a single argument is provided, returns the corresponding numpy array. 
+        np.ndarray | list[np.ndarray]:
+            If a single argument is provided, returns the corresponding numpy array.
             If multiple arguments are provided, returns a list of numpy arrays.
     """
     result = [np.array(X) if isinstance(X, list) else X for X in args]
