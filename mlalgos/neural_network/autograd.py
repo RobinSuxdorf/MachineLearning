@@ -1,6 +1,8 @@
 class Value:
-    def __init__(self, data: float) -> None:
+    def __init__(self, data: float, children: tuple['Value', ...] = (), op: str = "") -> None:
         self._data = data
+        self._prev = set(children)
+        self._op = op
 
     def __repr__(self) -> str:
         return f"Value(data={self._data})"
@@ -8,13 +10,13 @@ class Value:
     def __add__(self, other: 'Value | float') -> 'Value':
         other = other if isinstance(other, Value) else Value(other)
 
-        out = Value(self._data + other._data)
+        out = Value(self._data + other._data, (self, other))
         return out
 
     def __mul__(self, other: 'Value | float') -> 'Value':
         other = other if isinstance(other, Value) else Value(other)
 
-        out = Value(self._data * other._data)
+        out = Value(self._data * other._data, (self, other))
         return out
 
     def __radd__(self, other: 'Value | float') -> 'Value':
