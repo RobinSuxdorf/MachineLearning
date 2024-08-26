@@ -1,2 +1,2 @@
 from .autograd import Value
-from .module import Module
+from .base import Module, Neuron

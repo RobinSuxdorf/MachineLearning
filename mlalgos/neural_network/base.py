@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Generator
+import random
 from mlalgos import ArrayLike
 from mlalgos.neural_network import Value
 
@@ -26,7 +27,7 @@ class Module(ABC):
             elif isinstance(attr, Module):
                 yield from attr.parameters()
 
-    def __call__(self, x: ArrayLike) -> ArrayLike:
+    def __call__(self, x: ArrayLike) -> Value | ArrayLike:
         """
         Makes an instance callable and delegates the call to the `forward` method.
 
@@ -39,7 +40,7 @@ class Module(ABC):
         return self.forward(x)
 
     @abstractmethod
-    def forward(self, x: ArrayLike) -> ArrayLike:
+    def forward(self, x: ArrayLike) -> Value | ArrayLike:
         """
         Defines the computation performed at every call.
 
@@ -53,3 +54,15 @@ class Module(ABC):
             ArrayLike: The output data after applying the module's computation.
         """
         pass
+
+class Neuron(Module):
+    def __init__(self, n_inputs: int) -> None:
+        self._w = [Value(random.uniform(-1, 1)) for _ in range(n_inputs)]
+        self._b = Value(random.uniform(-1, 1))
+
+    def forward(self, x: ArrayLike) -> Value:
+        if len(x) != len(self._w):
+            raise ValueError(f"Expected input of length {len(self._w)}, but got {len(x)}.")
+
+        out = sum((wi * xi for wi, xi in zip(self._w, x)), self._b)
+        return out
