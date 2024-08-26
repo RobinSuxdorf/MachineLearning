@@ -1,7 +1,10 @@
 from typing import Callable
 
+
 class Value:
-    def __init__(self, data: float, children: tuple['Value', ...] = (), op: str = "") -> None:
+    def __init__(
+        self, data: float, children: tuple["Value", ...] = (), op: str = ""
+    ) -> None:
         """
         Initialize a Value object to represent a node in a computational graph.
 
@@ -11,7 +14,7 @@ class Value:
             op (str): The operation that created this node (e.g., '+', '*', '**').
         """
         self._data = data
-        self._prev: set['Value'] = set(children)
+        self._prev: set["Value"] = set(children)
         self._op = op
         self._grad: float = 0.0
         self._backward: Callable[[], None] = lambda: None
@@ -56,7 +59,7 @@ class Value:
 
         return f"Value(data={self.data})"
 
-    def __add__(self, other: 'Value | float') -> 'Value':
+    def __add__(self, other: "Value | float") -> "Value":
         """
         Add this Value to another Value or float.
 
@@ -77,7 +80,7 @@ class Value:
         out._backward = _backward
         return out
 
-    def __mul__(self, other: 'Value | float') -> 'Value':
+    def __mul__(self, other: "Value | float") -> "Value":
         """
         Multiply this Value with another Value or float.
 
@@ -98,7 +101,7 @@ class Value:
         out._backward = _backward
         return out
 
-    def __pow__(self, other: float) -> 'Value':
+    def __pow__(self, other: float) -> "Value":
         """
         Raise this Value to the power of exponent.
 
@@ -108,7 +111,7 @@ class Value:
         Returns:
             Value: A new Value object representing the power operation.
         """
-        out = Value(self.data ** other, (self, ), f"**{other}")
+        out = Value(self.data**other, (self,), f"**{other}")
 
         def _backward() -> None:
             self.grad += other * (self.data ** (other - 1)) * out.grad
@@ -116,7 +119,7 @@ class Value:
         out._backward = _backward
         return out
 
-    def __radd__(self, other: 'Value | float') -> 'Value':
+    def __radd__(self, other: "Value | float") -> "Value":
         """
         Define the reverse addition operation.
 
@@ -128,7 +131,7 @@ class Value:
         """
         return self + other
 
-    def __rmul__(self, other: 'Value | float') -> 'Value':
+    def __rmul__(self, other: "Value | float") -> "Value":
         """
         Define the reverse multiplication operation.
 
@@ -140,7 +143,7 @@ class Value:
         """
         return self * other
 
-    def __neg__(self) -> 'Value':
+    def __neg__(self) -> "Value":
         """
         Define the negation operation.
 
@@ -149,7 +152,7 @@ class Value:
         """
         return self * -1
 
-    def __sub__(self, other: 'Value | float') -> 'Value':
+    def __sub__(self, other: "Value | float") -> "Value":
         """
         Define the subtraction operation.
 
@@ -161,7 +164,7 @@ class Value:
         """
         return self + (-other)
 
-    def __truediv__(self, other: 'Value | float') -> 'Value':
+    def __truediv__(self, other: "Value | float") -> "Value":
         """
         Define the true division operation.
 
@@ -177,6 +180,7 @@ class Value:
         """
         Perform backpropagation to compute the gradients of all nodes in the computational graph.
         """
+
         def _topological_sort(root: Value) -> list[Value]:
             topo: list[Value] = []
             visited: set[Value] = set()
