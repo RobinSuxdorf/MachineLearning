@@ -29,8 +29,8 @@ class Value:
         out = Value(self.data + other.data, (self, other), "+")
 
         def _backward() -> None:
-            self.grad = 1.0 * out.grad
-            other.grad = 1.0 * out.grad
+            self.grad += 1.0 * out.grad
+            other.grad += 1.0 * out.grad
 
         out._backward = _backward
         return out
@@ -41,10 +41,19 @@ class Value:
         out = Value(self.data * other.data, (self, other), "*")
 
         def _backward() -> None:
-            self.grad = other.data * out.grad
-            other.grad = self.data * out.grad
+            self.grad += other.data * out.grad
+            other.grad += self.data * out.grad
 
         out._backward = _backward
+        return out
+
+    def __pow__(self, other: float) -> 'Value':
+        out = Value(self.data ** other, (self, ), f"**{other}")
+
+        def _backward() -> None:
+            self.grad += other * (self.data ** (other - 1)) * out.grad
+
+        out.backward = _backward
         return out
 
     def backward(self) -> None:
@@ -74,3 +83,12 @@ class Value:
 
     def __rmul__(self, other: 'Value | float') -> 'Value':
         return self * other
+
+    def __neg__(self) -> 'Value':
+        return self * -1
+
+    def __sub__(self, other: 'Value | float') -> 'Value':
+        return self + (-other)
+
+    def __truediv__(self, other: 'Value | float') -> 'Value':
+        return self * other**-1
