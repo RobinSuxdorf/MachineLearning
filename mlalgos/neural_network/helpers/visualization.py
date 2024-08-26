@@ -20,7 +20,7 @@ def draw_computational_graph(root: Value) -> Digraph:
     nodes, edges = _trace(root)
     for n in nodes:
         uid = str(id(n))
-        graph.node(name = uid, label = "{ data %.4f | grad %.4f }" % (n._data, n.grad), shape="record")
+        graph.node(name = uid, label = "{ data %.4f | grad %.4f }" % (n.data, n.grad), shape="record")
 
         if n._op:
             graph.node(name = uid + n._op, label = n._op)
