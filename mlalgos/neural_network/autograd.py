@@ -29,6 +29,16 @@ class Value:
         """
         return self._data
 
+    @data.setter
+    def data(self, value: float) -> None:
+        """
+        Set the data value of this node.
+
+        Args:
+            value (float): The new data value to set.
+        """
+        self._data = value
+
     @property
     def grad(self) -> float:
         """
