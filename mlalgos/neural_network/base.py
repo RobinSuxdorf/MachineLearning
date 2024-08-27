@@ -44,9 +44,6 @@ class Module(ABC):
         """
         Defines the computation performed at every call.
 
-        This method should be overridden by all subclasses to define the
-        computation that the module should perform when applied to input data.
-
         Args:
             x (ArrayLike): The input data to process.
 
@@ -56,8 +53,14 @@ class Module(ABC):
         pass
 
 class Neuron(Module):
-    def __init__(self, n_inputs: int) -> None:
-        self._w = [Value(random.uniform(-1, 1)) for _ in range(n_inputs)]
+    def __init__(self, in_features: int) -> None:
+        """
+        Initialize a Neuron.
+
+        Args:
+            in_features (int): Number of input features.
+        """
+        self._w = [Value(random.uniform(-1, 1)) for _ in range(in_features)]
         self._b = Value(random.uniform(-1, 1))
 
     def forward(self, x: ArrayLike) -> Value:
