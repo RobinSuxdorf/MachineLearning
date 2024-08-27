@@ -52,6 +52,7 @@ class Module(ABC):
         """
         pass
 
+
 class Neuron(Module):
     def __init__(self, in_features: int) -> None:
         """
@@ -65,7 +66,9 @@ class Neuron(Module):
 
     def forward(self, x: ArrayLike) -> Value:
         if len(x) != len(self._w):
-            raise ValueError(f"Expected input of length {len(self._w)}, but got {len(x)}.")
+            raise ValueError(
+                f"Expected input of length {len(self._w)}, but got {len(x)}."
+            )
 
         out = sum((wi * xi for wi, xi in zip(self._w, x)), self._b)
         return out
