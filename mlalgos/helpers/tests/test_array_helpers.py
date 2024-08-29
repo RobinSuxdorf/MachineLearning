@@ -32,13 +32,13 @@ def test_check_array_wrong_type(X: Any) -> None:
         (
             [],
             [0],
-            pytest.raises(ValueError, match=r"The lists do not have the same length."),
+            pytest.raises(ValueError, match=r"The inputs do not have the same length."),
         ),
         ([1, 2, 3], [4, 5, 6], nullcontext()),
     ],
 )
 def test_check_length(
-    list1: list[Any], list2: list[Any], expectation: ContextManager
+    list1: ArrayLike, list2: ArrayLike, expectation: ContextManager
 ) -> None:
     with expectation:
         assert check_length(list1, list2) is None
@@ -47,13 +47,13 @@ def test_check_length(
 @pytest.mark.parametrize(
     "list1,list2,expectation",
     [
-        ([], [0], pytest.raises(ValueError, match=r"The first list is empty.")),
+        ([], [0], pytest.raises(ValueError, match=r"The first array is empty.")),
         (
             [0, ""],
             [0, ""],
             pytest.raises(
                 ValueError,
-                match=r"Not all elements in the first list are of the same type.",
+                match=r"Not all elements in the first array are of the same type.",
             ),
         ),
         (
@@ -61,14 +61,15 @@ def test_check_length(
             ["bird", "cat", "dog"],
             pytest.raises(
                 ValueError,
-                match=r"Not all elements in the second list are of the same type as the first element of the first list.",
+                match=r"Not all elements in the second array are of the same type as the first element of the first array.",
             ),
         ),
         ([0.5, 1.3, 2.7], [2.72, 3.14], nullcontext()),
     ],
 )
 def test_check_type(
-    list1: list[Any], list2: list[Any], expectation: ContextManager
+    list1: ArrayLike, list2: ArrayLike, expectation: ContextManager
 ) -> None:
     with expectation:
         assert check_type(list1, list2) is None
+

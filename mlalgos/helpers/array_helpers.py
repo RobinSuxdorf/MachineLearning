@@ -1,4 +1,3 @@
-from typing import Any
 from mlalgos import ArrayLike
 import numpy as np
 
@@ -27,41 +26,49 @@ def check_array(*args: ArrayLike) -> list[np.ndarray]:
     return result[0] if len(result) == 1 else result
 
 
-def check_length(list1: list[Any], list2: list[Any]) -> None:
+def check_length(array1: ArrayLike, array2: ArrayLike) -> None:
     """
-    Checks if the two lists have the same length.
+    Checks if the two arrays (or lists) have the same length.
 
     Args:
-        list1 (list[Any]): The first list to check.
-        list2 (list[Any]): The second list to check.
+        array1 (ArrayLike): The first array or list to check.
+        array2 (ArrayLike): The second array or list to check.
 
     Raises:
-        ValueError: If the lists do not have the same length.
+        ValueError: If the arrays or lists do not have the same length.
     """
-    if len(list1) != len(list2):
-        raise ValueError("The lists do not have the same length.")
+    array1_len = len(array1)
+    array2_len = len(array2)
+
+    if array1_len != array2_len:
+        raise ValueError("The inputs do not have the same length.")
 
 
-def check_type(list1: list[Any], list2: list[Any]) -> None:
+def check_type(array1: ArrayLike, array2: ArrayLike) -> None:
     """
-    Checks if all elements in both lists are of the same type.
+    Checks if all elements in both arrays (or lists) are of the same type.
 
     Args:
-        list1 (list[Any]): The first list to check.
-        lst2 (list[Any]): The second list to check.
+        array1 (ArrayLike): The first array or list to check.
+        array2 (ArrayLike): The second array or list to check.
 
     Raises:
-        ValueError: If not all elements of list1 and list2 have the same type.
+        ValueError: If not all elements of array1 and array2 have the same type.
     """
-    if len(list1) == 0:
-        raise ValueError("The first list is empty.")
+    if isinstance(array1, list):
+        array1 = np.array(array1, dtype=object)
+    if isinstance(array2, list):
+        array2 = np.array(array2, dtype=object)
 
-    list_type = type(list1[0])
+    if array1.size == 0:
+        raise ValueError("The first array is empty.")
 
-    if not all(isinstance(entry, list_type) for entry in list1):
-        raise ValueError("Not all elements in the first list are of the same type.")
+    first_elem_type = type(array1.flat[0])
 
-    if not all(isinstance(entry, list_type) for entry in list2):
+    if not all(isinstance(entry, first_elem_type) for entry in array1.flat):
+        raise ValueError("Not all elements in the first array are of the same type.")
+
+    if not all(isinstance(entry, first_elem_type) for entry in array2.flat):
         raise ValueError(
-            "Not all elements in the second list are of the same type as the first element of the first list."
+            "Not all elements in the second array are of the same type as the first element of the first array."
         )
