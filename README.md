@@ -1,5 +1,5 @@
 # MLAlgos
-This project includes custom implementations of various machine learning algorithms, all built from scratch using NumPy. You'll also find Jupyter notebooks that explain more complex topics, like the basics of word embeddings or how graph convolutional networks operate.
+This project includes custom implementations of various machine learning algorithms, all built from scratch using NumPy. You'll also find Jupyter notebooks that explain more complex topics, like the basics of word embeddings or how graph convolutional networks operate. The implementation of the neural network package is inspired by Andrej Karpathy.
 
 ## Installation
 
