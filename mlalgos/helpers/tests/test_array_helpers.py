@@ -72,4 +72,3 @@ def test_check_type(
 ) -> None:
     with expectation:
         assert check_type(list1, list2) is None
-

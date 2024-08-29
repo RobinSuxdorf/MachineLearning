@@ -7,7 +7,7 @@ def test_autograd() -> None:
     z = 0.5 * x**2 - 2 * x + 5
     q = relu(z) + z * x
     h = relu(z * z + 1)
-    y = z * h + q * x + z ** 2
+    y = z * h + q * x + z**2
     y.backward()
 
     x_ag, y_ag = x, y
@@ -17,7 +17,7 @@ def test_autograd() -> None:
     z = 0.5 * x**2 - 2 * x + 5
     q = z.relu() + z * x
     h = (z * z + 1).relu()
-    y = z * h + q * x + z ** 2
+    y = z * h + q * x + z**2
     y.backward()
     x_pt, y_pt = x, y
 

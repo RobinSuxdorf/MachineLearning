@@ -53,7 +53,14 @@ class SGD(Optimizer):
 
 
 class Adam(Optimizer):
-    def __init__(self, parameters: Iterable[Value], lr: float, beta1: float = 0.9, beta2: float = 0.999, epsilon: float = 1e-8) -> None:
+    def __init__(
+        self,
+        parameters: Iterable[Value],
+        lr: float,
+        beta1: float = 0.9,
+        beta2: float = 0.999,
+        epsilon: float = 1e-8,
+    ) -> None:
         """
         Initializes the Adam optimizer.
 
@@ -79,9 +86,9 @@ class Adam(Optimizer):
         self._t += 1
         for p in self._parameters:
             self._m[p] = self._beta1 * self._m[p] + (1 - self._beta1) * p.grad
-            self._v[p] = self._beta2 * self._v[p] + (1 - self._beta2) * (p.grad ** 2)
+            self._v[p] = self._beta2 * self._v[p] + (1 - self._beta2) * (p.grad**2)
 
-            m_hat = self._m[p] / (1 - self._beta1 ** self._t)
-            v_hat = self._v[p] / (1 - self._beta2 ** self._t)
+            m_hat = self._m[p] / (1 - self._beta1**self._t)
+            v_hat = self._v[p] / (1 - self._beta2**self._t)
 
             p.data -= self._lr * m_hat / (math.sqrt(v_hat) + self._epsilon)
