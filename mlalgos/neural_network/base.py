@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Generator
 import random
+import pickle
 from mlalgos import ArrayLike
 from mlalgos.neural_network import Value
 
@@ -38,6 +39,31 @@ class Module(ABC):
             ArrayLike: The output after processing the input through the forward method.
         """
         return self.forward(x)
+
+    @classmethod
+    def load(cls, filepath: str) -> "Module":
+        """
+        Load a neural network model from a file using pickle.
+
+        Args:
+            filepath (str): The path to the file from which the model will be loaded.
+
+        Returns:
+            Module: The loaded neural network model.
+        """
+        with open(filepath, "rb") as f:
+            model = pickle.load(f)
+        return model
+
+    def save(self, filepath: str) -> None:
+        """
+        Save a neural network model to a file using pickle.
+
+        Args:
+            filepath (str): The path to the file where the model will be saved.
+        """
+        with open(filepath, "wb") as f:
+            pickle.dump(self, f)
 
     @abstractmethod
     def forward(self, x: ArrayLike) -> Value | ArrayLike:

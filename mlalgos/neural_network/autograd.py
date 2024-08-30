@@ -17,7 +17,13 @@ class Value:
         self._prev: set["Value"] = set(children)
         self._op = op
         self._grad: float = 0.0
-        self._backward: Callable[[], None] = lambda: None
+        self._backward: Callable[[], None] = self._default_backward
+
+    def _default_backward(self) -> None:
+        """
+        Default backward pass method used for initialization.
+        """
+        pass
 
     @property
     def data(self) -> float:
