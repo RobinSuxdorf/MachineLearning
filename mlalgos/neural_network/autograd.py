@@ -1,4 +1,5 @@
 from typing import Callable
+import math
 
 
 class Value:
@@ -217,3 +218,16 @@ class Value:
         self.grad = 1.0
         for node in reversed(topo):
             node._backward()
+
+    def log(self) -> "Value":
+        """
+        Applies the natural logarithm to the value.
+        """
+        out = Value(math.log(self.data), (self, ), "log")
+
+        def _backward() -> None:
+            self.grad += out.grad / self.data
+
+        out._backward = _backward
+
+        return out
